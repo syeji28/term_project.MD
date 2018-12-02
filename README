@@ -1,0 +1,10 @@
+import requests
+url = 'https://www.imdb.com/title/tt4123430/reviews?spoiler=hide&sort=helpfulnessScore&dir=desc&ratingFilter=0'
+r = requests.get(url)
+r.encoding = 'utf8'
+data = str(r.text)
+
+for i in range(25):
+    s = 'class="title" >'
+    data = data[data.find(s)+len(s):]
+    print(data[:data.find('</a>')])
