@@ -1,10 +1,32 @@
 import requests
+from flask import Flask
+app = Flask(__name__)
+
 url = 'https://www.imdb.com/title/tt4123430/reviews?spoiler=hide&sort=helpfulnessScore&dir=desc&ratingFilter=0'
 r = requests.get(url)
 r.encoding = 'utf8'
 data = str(r.text)
 
+
+f = open("C:\work\movie.txt", 'w')
 for i in range(25):
     s = 'class="title" >'
     data = data[data.find(s)+len(s):]
-    print(data[:data.find('</a>')])
+    a = (data[:data.find('</a>')])
+    f.write(a)
+f.close()
+
+
+@app.route("/")
+def movie():
+    f = open("C:\work\movie.txt", 'r')
+    rStr = ""
+    lines = f.readlines()
+    cnt = 1
+    for i in lines:
+        rStr += (str(cnt)+". "+i+"<br/>")
+        cnt += 1
+    return rStr
+print("Waiting at port 5000")
+if __name__ == '__main__':
+   app.run(debug=True, host='0.0.0.0')
